@@ -1,13 +1,13 @@
-;;; ws-mode.el --- WordStar emulation mode for GNU Emacs
+;;; lws-mode.el --- alt-WordStar emulation mode for GNU Emacs
 
 ;; Copyright (C) 1991, 2001-2017 Free Software Foundation, Inc.
 
-;; Author: Juergen Nickelsen <nickel@cs.tu-berlin.de>
-;; Version: 0.7
+;; Author: Juergen Nickelsen <nickel@cs.tu-berlin.de>, with
+;;    updates from Luke W. McCullough <lukaswm@gmail.com>
+;; Version: 0.8
 ;; Keywords: emulations
-;; Obsolete-since: 24.5
 
-;; This file is part of GNU Emacs.
+;; This file was forked from GNU Emacs.
 
 ;; GNU Emacs is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -187,6 +187,7 @@ BUGS:
  - Options for search and replace
  - Show markers (C-k h) is somewhat strange
  - Search and replace (C-q a) is only available in forward direction
+ - A number of WordStar commands are not emulated. <TODO> add detailed list
 
 No key bindings beginning with ESC are installed, they will work
 Emacs-like.")
