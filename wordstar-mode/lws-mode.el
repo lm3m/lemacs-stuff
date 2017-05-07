@@ -44,8 +44,8 @@
     (define-key map "\C-b" 'ws-begin-block)
     (define-key map "c" 'ws-copy-block)
     (define-key map "\C-c" 'ws-copy-block)
-    (define-key map "d" 'save-buffers-kill-emacs)
-    (define-key map "\C-d" 'save-buffers-kill-emacs)
+    (define-key map "d"  'ws-save-and-close)
+    (define-key map "\C-d" 'ws-save-and-close)
     (define-key map "f" 'find-file)
     (define-key map "\C-f" 'find-file)
     (define-key map "h" 'ws-show-markers)
@@ -126,8 +126,8 @@
     (define-key map "\C-f" 'ws-search)
     (define-key map "k" 'ws-goto-block-end)
     (define-key map "\C-k" 'ws-goto-block-end)
-    (define-key map "l" 'ws-undo)
-    (define-key map "\C-l" 'ws-undo)
+    (define-key map "l" 'flyspell-goto-next-error)
+    (define-key map "\C-l" 'flyspell-goto-next-error)
     (define-key map "p" 'ws-last-cursorp)
     (define-key map "\C-p" 'ws-last-cursorp)
     (define-key map "r" 'beginning-of-buffer)
@@ -135,11 +135,17 @@
     (define-key map "s" 'beginning-of-line)
     (define-key map "\C-s" 'beginning-of-line)
     (define-key map "\C-u" 'keyboard-quit)
-    (define-key map "w" 'ws-last-error)
-    (define-key map "\C-w" 'ws-last-error)
     (define-key map "y" 'ws-kill-eol)
     (define-key map "\C-y" 'ws-kill-eol)
     (define-key map "\177" 'ws-kill-bol)
+    (define-key map "e" 'ws-move-to-top)
+    (define-key map "\C-e" 'ws-move-to-top)
+    (define-key map "x" 'ws-move-to-bottom)
+    (define-key map "\C-x" 'ws-move-to-bottom)
+    (define-key map "w"  'ws-scroll-up-continuously)
+    (define-key map "\C-w" 'ws-scroll-up-continuously)
+    (define-key map "z" 'ws-scroll-down-continuously)
+    (define-key map "\C-z" 'ws-scroll-down-continuously)
     map))
 
 (defvar wordstar-mode-map
@@ -639,6 +645,49 @@ sWith: " )
 		    (ws-block-end-marker "Block begin marker not set")
 		    (t "Block markers not set")))))
 
-(provide 'ws-mode)
+(defun ws-move-to-top ()
+  "Move to top of visible buffer"
+  (interactive)
+  (move-to-window-line-top-bottom 0 ))
 
-;;; ws-mode.el ends here
+(defun ws-move-to-bottom ()
+  "Move to top of visible buffer"
+  (interactive)
+  (move-to-window-line-top-bottom -1 ))
+
+(defun ws-scroll-up-continuously ()
+  "Move to top of visible buffer, one line at a time, unless interrupted"
+   (interactive)
+  (scroll-down 1)
+  (let ((keep_moving 1))
+    (while keep_moving
+      (setq keep_moving nil)
+      (if (sit-for .5)
+          (if (scroll-down 1)
+              (setq keep_moving nil)
+            (setq keep_moving 1))))
+    keep_moving))
+
+(defun ws-scroll-down-continuously ()
+  "Move to bottom of visible buffer, one line at a time, unless interrupted"
+  (interactive)
+  (scroll-up 1)
+  (let ((keep_moving 1))
+    (while keep_moving
+      (setq keep_moving nil)
+      (if (sit-for .5)
+          (if (scroll-up 1)
+              (setq keep_moving nil)
+            (setq keep_moving 1))))
+    keep_moving))
+
+(defun ws-save-and-close ()
+  "Close the current buffer after saving it."
+  (interactive)
+  (save-buffer)
+  (kill-buffer)
+  )
+
+(provide 'lws-mode)
+
+;;; lws-mode.el ends here
