@@ -126,8 +126,8 @@
     (define-key map "\C-f" 'ws-search)
     (define-key map "k" 'ws-goto-block-end)
     (define-key map "\C-k" 'ws-goto-block-end)
-    (define-key map "l" 'flyspell-goto-next-error)
-    (define-key map "\C-l" 'flyspell-goto-next-error)
+    (define-key map "l" 'ws-check-next-misspelling)
+    (define-key map "\C-l" 'ws-check-next-misspelling)
     (define-key map "p" 'ws-last-cursorp)
     (define-key map "\C-p" 'ws-last-cursorp)
     (define-key map "r" 'beginning-of-buffer)
@@ -687,6 +687,15 @@ sWith: " )
   (save-buffer)
   (kill-buffer)
   )
+
+(defun ws-check-next-misspelling ()
+  "Move to next misspelling and check it."
+  (interactive)
+  (flyspell-buffer)
+  (flyspell-goto-next-error)
+  (when (eq (flyspell-check-word-p) t)
+      (ispell-word))
+  )  
 
 (provide 'lws-mode)
 
